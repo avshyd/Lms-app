@@ -1,0 +1,83 @@
+    
+ <form name="createinsurarform" novalidate="" class="form-horizontal well" ng-controller="InsurarController" rc-submit="submit()">
+        <api-validate></api-validate>
+        <fieldset>
+          <legend>{{'label.anchor.insurar' | translate}}</legend>
+
+          <div class="control-group">
+            <label class="control-label" for="insuredAsset">{{ 'label.input.assetCode' | translate }}</label>
+            <div class="controls">
+              <select id="insuredAsset" ng-model="formData.insuredAsset"  ng-options="assetDropdown.assetCode as assetDropdown.assetCode for assetDropdown in assetDropdowns" value="{{assetTypeDropdown.assetCode}}">
+              <option value="">--{{'label.menu.selectasset' | translate}}--</option>
+          </select>
+            </div>
+          </div>
+
+           <div class="control-group">
+            <label class="control-label" for="insurer">{{ 'label.input.insurar' | translate }}</label>
+            <div class="controls">
+              <select id="insurer" ng-model="formData.insurer"  ng-options="insurarDropdown.insurer as insurarDropdown.insurer for insurarDropdown in insurarDropdowns" value="{{insurarDropdown.insurer}}">
+                  <option value="">--{{'label.menu.selectinsurar' | translate}}--</option>
+             </select>
+            </div>
+          </div>
+
+              <div class="control-group">
+            <label class="control-label" for="vehicalModel">{{ 'label.input.vehicalModel' | translate }}</label>
+            <div class="controls">
+              <select id="vehicalModel" ng-model="formData.vehicalModel"  ng-options="modelDropdown.models as modelDropdown.models for modelDropdown in modelDropdowns" value="{{modelDropdown.models}}">
+                  <option value="">--{{'label.menu.selectmodel' | translate}}--</option>
+             </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="valueOfAsset">{{ 'label.input.valueOfAsset' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="valueOfAsset" name="valueOfAsset" class="input-small" ng-model="formData.valueOfAsset" required late-Validate/>
+              <form-validate valattributeform="createinsurarform" valattribute="valueOfAsset"/>
+            </div>
+          </div>
+
+          
+              <div class="control-group">
+            <label class="control-label" for="premiumAmount">{{ 'label.input.premiumAmount' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="premiumAmount" name="premiumAmount" class="input-small" ng-model="formData.premiumAmount" required late-Validate/>
+              <form-validate valattributeform="createinsurarform" valattribute="premiumAmount"/>
+            </div>
+          </div>
+                <div class="control-group">
+            <label class="control-label" for="insuredTerm">{{ 'label.input.insuredTerm' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="insuredTerm" name="insuredTerm" class="input-small" ng-model="formData.insuredTerm" required late-Validate/>
+              <form-validate valattributeform="createinsurarform" valattribute="insuredTerm"/>
+            </div>
+          </div>
+     
+                    <div class="control-group">
+            <label class="control-label" for="vechicalRegNo">{{ 'label.input.vechicalRegNo' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="vechicalRegNo" name="vechicalRegNo" class="input-small" ng-model="formData.vechicalRegNo" required late-Validate/>
+              <form-validate valattributeform="createinsurarform" valattribute="vechicalRegNo"/>
+            </div>
+          </div> 
+
+
+ 
+
+          
+               <div class="control-group">
+                      <label class="control-label">{{ 'label.input.insuredDate' | translate }}<span class="required">*</span></label>
+                      <div class="controls">
+                          <input id="insuredDate" class="date-disable" readonly type="text" datepicker-pop="dd MMMM yyyy" ng-model="formData.insuredDate" is-open="opened" min="minDate" max="restrictDate"/>
+                      </div>
+                  </div>
+ 
+
+
+          <div class="offset3">
+            <a href="#/viewloanaccount/{{loanId}}"><button type="reset" class="btn">{{'label.button.cancel'| translate}}</button></a>
+            <button type="submit" class="btn btn-primary">{{'label.button.save'| translate}}</button>
+          </div>
+        </fieldset>
+      </form>

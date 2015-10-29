@@ -1,0 +1,33 @@
+<div>
+    <ul class="breadcrumb">
+        <li class="active">{{'label.anchor.clients' | translate}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/createclient" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{'label.button.createclient' | translate}}</a>
+    </div>
+</div>
+<div class="row-fluid" ng-controller="ClientController">
+    <input ng-autofocus="true" ng-model="filterText" type="text" class="span marginbottom0px" placeholder="{{'label.input.filterbynameaccno' | translate}}">
+	<table class="table">
+        <thead>
+            <tr class="graybg">
+                <th>{{'label.heading.name' | translate}}</th>
+                <th>{{'label.heading.accnum' | translate}}</th>
+                <th>{{'label.heading.staff' | translate}}</th>
+                <th>{{'label.heading.office' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="client in clients.currentPageItems  | filter:filterText">
+                <td><a href="#/viewclient/{{client.id}}"><i class="icon-stop {{client.status.code | StatusLookup}}"></i>&nbsp;{{client.displayName}}</a></td>
+                <td><a href="#/viewclient/{{client.id}}">{{client.accountNo}}</a></td>
+                <td>{{client.staffName}}</td>
+                <td>{{client.officeName}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <ul class="pager">
+        <li class="previous"><a ng-click="clients.previous()" href="" ng-disabled="!clients.hasPrevious()">&larr; {{'label.button.previous' | translate}}</a></li>
+        <li class="next" ><a ng-click="clients.next()" href="" ng-disabled="!clients.hasNext()">{{'label.button.next' | translate}} &rarr;</a></li>
+    </ul>
+</div>

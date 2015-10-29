@@ -1,0 +1,31 @@
+<div>
+    <ul class="breadcrumb">
+        <li><a href="#/products">{{'label.anchor.products' | translate}}</a> <span class="divider">/</span></li>
+        <li class="active">{{'label.anchor.loanproducts' | translate}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/createloanproduct" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{'label.button.createloanproduct' | translate}}</a>
+    </div>
+</div>
+
+<div class="row-fluid" ng-controller="LoanProductController">
+    <input ng-autofocus="true" ng-model="filterText" type="text" class="span marginbottom0px" placeholder="{{'label.input.filterbynamefundname' | translate}}">
+	<table class="table">
+        <thead>
+            <tr class="graybg">
+                <th>{{'label.heading.name' | translate}}</th>
+                <th>{{'label.heading.fundname' | translate}}</th>
+                <th>{{'label.heading.expirydate' | translate}}</th>
+                <th>{{'label.heading.status' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="loanproduct in loanproducts | filter:filterText">
+                <td><a href="#/viewloanproduct/{{loanproduct.id}}">{{loanproduct.name}}</a></td>
+                <td>{{loanproduct.fundName}}</td>
+                <td>{{loanproduct.closeDate | DateFormat}}</td>
+                <td><i class="icon-stop {{loanproduct.status | StatusLookup}}"></i></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

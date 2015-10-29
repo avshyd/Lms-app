@@ -1,0 +1,78 @@
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="#/organization">{{'label.anchor.organization' | translate}}</a> <span class="divider">/</span></li>
+          <li><a href="#/assets">{{'label.anchor.assetsmanage' | translate}}</a> <span class="divider">/</span></li>
+         <li><a href="#/viewasset/{{alldata.id}}">{{alldata.id}}&nbsp;{{formData.assetCode}}</a> <span class="divider">/</span></li>
+          <li class="active">{{'label.anchor.editassets' | translate}}</li>
+        </ul>
+      </div>
+ <form name="editassetform" novalidate="" class="form-horizontal well" ng-controller="EditAssetController" rc-submit="submit()">
+        <api-validate></api-validate>
+        <fieldset>
+          <legend>{{'label.anchor.editassets' | translate}}</legend>
+
+          <div class="control-group">
+            <label class="control-label" for="assetType">{{ 'label.input.assetType' | translate }}</label>
+            <div class="controls">
+              <select id="assetType" ng-model="formData.assetType"  ng-options="assetTypeDropdown.assetType as assetTypeDropdown.assetType for assetTypeDropdown in assetTypeDropdowns" value="{{assetTypeDropdown.assetType}}">
+  
+          </select>
+            </div>
+          </div>
+
+           <div class="control-group">
+            <label class="control-label" for="model">{{ 'label.input.model' | translate }}</label>
+            <div class="controls">
+              <select id="model" ng-model="formData.model"  ng-options="modelDropdown.models as modelDropdown.models for modelDropdown in modelDropdowns" value="{{modelDropdown.models}}">
+             </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="assetCode">{{ 'label.input.assetCode' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="assetCode" name="assetCode"  class="input-small" ng-model="formData.assetCode" required late-Validate/>
+              <form-validate valattributeform="createemployeeform" valattribute="assetCode"/>
+            </div>
+          </div>
+              <div class="control-group">
+            <label class="control-label" for="make">{{ 'label.input.make' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="make" name="make" class="input-small" ng-model="formData.make" required late-Validate/>
+              <form-validate valattributeform="createemployeeform" valattribute="make"/>
+            </div>
+          </div>
+                <div class="control-group">
+            <label class="control-label" for="purchaseValue">{{ 'label.input.purchaseValue' | translate }}</label>
+            <div class="controls">
+              <input type="text" id="purchaseValue" name="purchaseValue" class="input-small" ng-model="formData.purchaseValue" required late-Validate/>
+              <form-validate valattributeform="createemployeeform" valattribute="purchaseValue"/>
+            </div>
+          </div>
+          
+                 <div class="control-group">
+            <label class="control-label" for="saleValue">{{ 'label.input.saleValue' | translate }}</label>
+            <div class="controls">
+             		
+              <input type="text" id="saleValue" name="saleValue" class="input-small" ng-model="formData.saleValue" required late-Validate/>
+              <form-validate valattributeform="createemployeeform" valattribute="saleValue"/>
+             
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="assetDescription">{{ 'label.input.assetDescription' | translate }}</label>
+            <div class="controls">
+             
+                  <textarea rows="2" ng-model="formData.assetDescription"></textarea>
+            </div>
+          </div>
+          
+
+ 
+
+          <div class="offset3">
+            <a href="#/assets"><button type="reset" class="btn">{{'label.button.cancel'| translate}}</button></a>
+            <button type="submit" class="btn btn-primary">{{'label.button.save'| translate}}</button>
+          </div>
+        </fieldset>
+      </form>

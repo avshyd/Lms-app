@@ -1,0 +1,57 @@
+    <script type="text/ng-template" id="deleteasset.html">
+        <div class="modal-header silver">
+            <h3 class="bolder">{{'label.heading.delete' | translate}}</h3>
+        </div>
+        <div class="modal-body ">
+            <button class="btn btn-warning" ng-click="cancel()">{{'label.button.cancel' | translate}}</button>
+            <button class="btn btn-primary" ng-click="delete()">{{'label.button.confirm' | translate}}</button>
+        </div>
+    </script>
+<div  ng-controller="ViewAssetController">
+	<div class="paddedbottom10">
+		<ul class="breadcrumb">
+	        <li><a href="#/organization">{{'label.anchor.organization' | translate}}</a> <span class="divider">/</span></li>
+	        <li><a href="#/assets">{{'label.anchor.assetsmanage' | translate}}</a> <span class="divider">/</span></li>
+	        <li class="active">{{asset.id}}&nbsp;&nbsp;</li>
+	    </ul>
+	    <div class="pull-right">
+	      <div class="btn-group">
+           
+	          <a href="#/editasset/{{asset.id}}" class="btn btn-primary"><i class="icon-edit icon-white"></i>{{'label.button.edit' | translate}}</a>
+               <button type="button" ng-click="deleteasset()" class="btn btn-primary"><i class="icon-trash icon-white"></i>{{'label.button.delete' | translate}}</button>
+	    <!--      <a class="btn btn-primary"><i class="icon-trash icon-white"></i> Delete</a>     -->
+	      </div>
+	    </div>
+	</div>
+
+	<div class="row paddedleft">
+		<h3>{{employee.displayName}}</h3>
+		<table width="100%">
+			<tr>
+				<td width="20%">{{ 'label.heading.assetCode' | translate }}</td>
+				<td width="80%">{{asset.assetCode}}</td>
+			</tr>
+			<tr>
+				<td>{{ 'label.heading.assetDescription' | translate }}</td>
+				<td>{{asset.assetDescription}}</td>
+			</tr>
+			<tr>
+				<td>{{ 'label.heading.assetType' | translate }}</td>
+				<td>{{asset.assetType}}</td>
+			</tr>
+			<tr>
+				<td>{{ 'label.heading.model' | translate }}</td>
+				<td>{{asset.model}}</td>
+			</tr>
+		<tr>
+				<td>{{ 'label.heading.purchaseValue' | translate }}</td>
+				<td>{{asset.purchaseValue}}</td>
+			</tr>
+			<tr>
+				<td>{{ 'label.heading.saleValue' | translate }}</td>
+				<td>{{asset.saleValue}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+          

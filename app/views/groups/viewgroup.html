@@ -1,0 +1,289 @@
+<div ng-controller="ViewGroupController">
+ <div>
+   <ul class="breadcrumb">
+    <li>
+        <i class="icon-group icon-2x"></i>
+    </li>
+    <li>
+        <h3>
+            &nbsp;
+            <strong>{{group.name}}</strong>
+            &nbsp;
+            <i class="icon-circle {{group.status.code | StatusLookup}}"></i>
+            &nbsp;
+        </h3>
+    </li>
+    <li><span class="divider">|</span>
+        <i class="icon-barcode"></i>
+        <small>{{ 'label.uniquelyidentifiedwithid' | translate }} {{group.id}}&nbsp;</small>
+    </li>
+    <li><span class="divider">|</span>
+        <i class="icon-building"></i>
+        <small>{{ 'label.heading.office' | translate }}: "{{group.officeName}}" </small>
+    </li>
+   </ul>
+ </div>
+ <div>
+   <tabset style="margin-bottom: 0;">
+    <tab heading="{{ 'label.heading.general' | translate }}">
+        <div class="row-fluid">
+            <div class="row-fluid primarydiv">
+                <div class="btn-group pull-right" data-ng-hide="group.status.value == 'Closed'">
+                    <a href="#/editgroup/{{group.id}}?managecode=2" class="btn btn-primary" data-ng-hide="group.status.value=='Active'"><i class="icon-check-sign icon-white"></i>{{ 'label.button.activate' | translate }}</a>
+                    <a href="#/editgroup/{{group.id}}?managecode=1" class="btn btn-primary"><i class="icon-edit icon-white"></i>{{ 'label.button.edit' | translate }}</a>
+                    <a ng-show="group.active" href="#/new_group_saving_application/{{group.id}}" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{ 'label.button.groupsavingapplication' | translate }}</a>
+                    <a ng-show="group.active" href="#/newgrouploanaccount/{{group.id}}" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{ 'label.button.grouploanapplication' | translate }}</a>
+                    <a ng-show="group.active" href="#/newjlgloanaccount/{{group.id}}" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{ 'label.button.jlgloanapplication' | translate }}</a>
+                    <a href="#/closegroup/{{group.id}}" class="btn btn-primary"><i class="icon-remove-circle icon-white"></i>{{ 'label.button.close' | translate }}</a>
+                    <a href="#/attachmeeting/{{group.id}}/groups" class="btn btn-primary pull-right" data-ng-hide="group.collectionMeetingCalendar"><i class="icon-paper-clip icon-white"></i>{{ 'label.button.attachmeeting' | translate }}</a>
+                    <button class="btn btn-primary" data-ng-click="deleteGroup()" data-ng-hide="group.status.value=='Active'"><i class="icon-trash icon-white"></i>{{ 'label.button.delete' | translate }}</button>
+                    <a href="#/assignstaff/{{group.id}}/groups" class="btn btn-primary" data-ng-hide="group.staffId">{{ 'label.button.assignstaff' | translate }}</a>
+                    <button class="btn btn-primary" data-ng-click="unassignStaffGroup()" data-ng-show="group.staffId">{{ 'label.button.unassignstaff' | translate }}</button>
+                </div>
+            </div>
+            <br/>
+            <script type="text/ng-template" id="deletegroup.html">
+                <div class="modal-header silver">
+                    <h3 class="bolder">{{'label.heading.delete' | translate}}</h3>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-warning" ng-click="cancel()">{{'label.button.cancel' | translate}}</button>
+                    <button class="btn btn-primary" ng-click="delete()">{{'label.button.confirm' | translate}}</button>
+                </div>
+            </script>
+            <script type="text/ng-template" id="groupunassignstaff.html">
+                <div class="modal-header silver">
+                    <h3 class="bolder">{{'label.heading.unassignstaff' | translate}}</h3>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-warning" ng-click="cancel()">{{'label.button.cancel' | translate}}</button>
+                    <button class="btn btn-primary" ng-click="unassign()">{{'label.button.confirm' | translate}}</button>
+                </div>
+            </script>
+            <div class="row-fluid">
+            <div class="span7">
+                <div data-ng-show="group.status.value=='Closed'">
+                    <h3>{{'label.heading.groupclosed' | translate}}</h3>
+                </div>
+                <table width="100%" >
+                    <tr>
+                        <td width="35%">{{'label.heading.name' | translate}}</td>
+                        <td width="65%">{{group.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'label.heading.activationdate' | translate }}</td>
+                        <td valign="top">{{group.activationDate | DateFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'label.heading.staff' | translate }}</td>
+                        <td>{{group.staffName}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'label.heading.nextmeetingon' | translate }}</td>
+                        <td>{{group.collectionMeetingCalendar.nextTenRecurringDates[0] | DateFormat}}&nbsp;
+                            <a href="#/editcalendar/groups/{{group.id}}/{{group.collectionMeetingCalendar.id}}" ng-show="group.collectionMeetingCalendar"><i class="icon-edit icon-white"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'label.heading.meetingfrequency' | translate }}</td>
+                        <td>{{group.collectionMeetingCalendar.humanReadable}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="span5">
+                <table class="table table-striped" width="100%" >
+                    <thead>
+                    <tr class="graybg">
+                        <th colspan="2">{{ 'label.heading.summary' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactiveclient' | translate }}</td>
+                        <td width="40%">{{summary.activeClients}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactivegrouploans' | translate }}</td>
+                        <td width="40%">{{summary.activeGroupLoans}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactiveclientloans' | translate }}</td>
+                        <td width="40%">{{summary.activeGroupLoans}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactivegroupborrowers' | translate }}</td>
+                        <td width="40%">{{summary.activeGroupBorrowers}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactiveclientborrowers' | translate }}</td>
+                        <td width="40%">{{summary.activeClientBorrowers}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactiveoverduegrouploans' | translate }}</td>
+                        <td width="40%">{{summary.overdueGroupLoans}}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">{{ 'label.numofactiveoverdueclientloans' | translate }}</td>
+                        <td width="40%">{{summary.overdueClientLoans}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br/>
+          <div data-ng-show="groupAccounts.loanAccounts">
+            <h3>{{ 'label.heading.loanaccoverview' | translate }}</h3>
+            <br/>
+            <a href="#/groupclosedloanaccount/{{group.id}}" class="pull-right">{{ 'label.viewcloseloans' | translate }}</a>
+            <table class="table table-striped" width="100%">
+                  <thead>
+                    <tr class="graybg">
+                        <th>{{ 'label.heading.products' | translate }}</th>
+                        <th>{{ 'label.heading.groupaccounts' | translate }} No</th>
+                        <th>{{ 'label.heading.status' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="loanaccount in groupAccounts.loanAccounts | filter:isLoanNotClosed" >
+                        <td>
+                            <a href="#/viewloanaccount/{{loanaccount.id}}">
+                                {{loanaccount.productName}}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#/viewloanaccount/{{loanaccount.id}}">
+                                {{loanaccount.accountNo}}
+                            </a>
+                        </td>
+                        <td><i class="icon-stop {{loanaccount.status.code | StatusLookup}}"></i>{{loanaccount.status.value}}</td>
+                    </tr>
+                    <tr><td colspan="5">&nbsp;</td></tr>
+                </tbody>
+            </table>
+          </div>
+          <div data-ng-show="groupAccounts.savingsAccounts">
+            <h3>{{'label.heading.savingsaccoverview' | translate }}</h3>
+            <a href="#/groupclosedsavingaccount/{{group.id}}" class="pull-right">{{ 'label.viewclosesavings' | translate }}</a>
+            <table class="table table-striped" width="100%">
+              <thead>
+                <tr class="graybg">
+                    <th>{{ 'label.heading.products' | translate }}</th>
+                    <th>{{ 'label.heading.accnum' | translate }}</th>
+                    <th>{{ 'label.heading.balance' | translate }}</th>
+                    <th>{{ 'label.heading.status' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="savingaccount in groupAccounts.savingsAccounts | filter:isSavingNotClosed">
+                    <td><a href="#/viewsavingaccount/{{savingaccount.id}}">{{savingaccount.productName}}</a></td>
+                    <td><a href="#/viewsavingaccount/{{savingaccount.id}}">{{savingaccount.accountNo}}</a></td>
+                    <td>{{savingaccount.accountBalance}}</td>
+                    <td><i class="icon-stop {{savingaccount.status.code | StatusLookup}}"></i>{{savingaccount.status.value}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+    </tab>
+    <tab heading="{{ 'label.heading.members' | translate }}">
+        <div class="row-fluid">
+            <div class="row-fluid primarydiv" data-ng-hide="group.status.value == 'Closed'">
+                <a href="#/addmember?groupId={{group.id}}&officeId={{group.officeId}}" class="btn btn-primary pull-right"><i class="icon-plus-sign-alt icon-white"></i>{{ 'label.button.add' | translate }}</a>
+                <a href="#/membermanage/{{group.id}}?managecode=2" class="btn btn-primary pull-right">{{ 'label.button.disassociatemember' | translate }}</a>
+                <a href="#/membermanage/{{group.id}}?managecode=1" class="btn btn-primary pull-right">{{ 'label.button.associatemember' | translate }}</a>
+                <a href="#/groupattendance?groupId={{group.id}}&calendarId={{group.collectionMeetingCalendar.id}}" data-ng-show="group.collectionMeetingCalendar" class="btn btn-primary pull-right">{{ 'label.button.attendance' | translate }}</a>
+                <a href="#/transferclients/{{group.id}}" class="btn btn-primary pull-right">{{ 'label.button.transferclients' | translate }}</a>
+            </div>
+        </div>
+        <table class="table table-striped" width="100%">
+            <thead>
+                 <th>{{'label.heading.accnum' | translate}}</th>
+                 <th>{{'label.heading.name' | translate}}</th>
+                 <th>{{ 'label.heading.status' | translate }}</th>
+            </thead>
+            <tbody>
+               <tr ng-repeat="member in group.clientMembers">
+                <td><a href="#/viewclient/{{member.id}}">{{member.accountNo}}</a></td>
+                <td><a href="#/viewclient/{{member.id}}">{{member.displayName}}</a></td>
+                <td> <i class="icon-stop {{member.status.code | StatusLookup}}"></i>{{member.status.value}}</td>
+               </tr>
+            </tbody>
+        </table>
+    </tab>
+    <tab heading="{{ 'label.heading.notes' | translate }}">
+        <br/>
+        <form>
+            <div class="control-group">
+                <div class="controls">
+                    <textarea rows="1" class="field span marginbottom0px" id="textarea" placeholder="{{ 'label.input.enternote' | translate }}" ng-model="formData.note"></textarea>
+                    <div class="notewrapper row-fluid">
+                        <span class="pull-right noteaddbuttonwrapper">
+                            <button class="btn btn-primary" type="submit" ng-click="saveNote()">{{ 'label.button.add' | translate }}</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div ng-repeat="groupNote in groupNotes | orderBy:predicate:reverse">
+            <div>
+                <blockquote>
+                    <p>{{groupNote.note}}</p>
+                    {{groupNote.id}}
+                    <small>{{'label.createdby' | translate}} :&nbsp;{{groupNote.createdByUsername}}</small>
+                    <small>{{'label.createdon' | translate}} :&nbsp;{{groupNote.createdOn | DateFormat}}</small>
+                </blockquote>
+            </div>
+        </div>
+        </ul>
+    </tab>
+    <tab heading="{{ 'label.heading.committee' | translate }}">
+        <div class="row-fluid">
+            <div class="row-fluid primarydiv" data-ng-hide="group.status.value == 'Closed'">
+                <a href="#/addrole/{{group.id}}" class="btn btn-primary pull-right"><i class="icon-plus-sign-alt icon-white"></i>{{ 'label.button.add' | translate }}</a>
+            </div>
+        </div>
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>{{ 'label.heading.role' | translate }}</th>
+                    <th>{{ 'label.heading.name' | translate }}</th>
+                    <th>{{ 'label.heading.clientid' | translate }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="grouprole in group.groupRoles" >
+                    <td>{{grouprole.role.name}}</td>
+                    <td><a href="#viewclient/{{member.id}}">{{grouprole.clientName}}</a></td>
+                    <td>{{grouprole.clientId}}</td>
+                    <td><button type="button" class="btn btn-primary" data-ng-hide="group.status.value == 'Closed'" data-ng-click="delrole(grouprole.id)">{{ 'label.button.unassign' | translate }}</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </tab>
+        <tab heading="{{groupdatatable.registeredTableName}}" ng-repeat="groupdatatable in groupdatatables" select="dataTableChange(groupdatatable)">
+            <span data-ng-hide="group.status.value == 'Closed'">
+                <a ng-show="datatabledetails.isData" class="btn btn-danger pull-right" ng-click="deleteAll(groupdatatable.registeredTableName, group.id)"><i class="icon-trash icon-white"></i>{{'label.button.deleteall' | translate}}</a>
+                <span ng-show="!datatabledetails.isData || datatabledetails.isMultirow" class="pull-right ">
+                   <a href="#/makedatatableentry/{{groupdatatable.registeredTableName}}/{{group.id}}" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{'label.button.add' | translate}}</a>
+                </span></br>
+            </span>
+            <table ng-show="datatabledetails.isData" class="table">
+              <thead>
+                <th ng-repeat="column in datatabledetails.columnHeaders">{{column.columnName}}</th>
+              </thead>
+                <tbody>
+                  <tr ng-repeat="data in datatabledetails.data">
+                    <td ng-repeat="row in data.row">
+                      <span ng-show="$index == 0">
+                        <a href="#/viewdatatableentry/{{groupdatatable.registeredTableName}}/{{group.id}}/{{data.row[0]}}" ng-show="datatabledetails.isMultirow">{{row}}</a>
+                        <a href="#/viewdatatableentry/{{groupdatatable.registeredTableName}}/{{group.id}}/" ng-hide="datatabledetails.isMultirow">{{row}}</a>
+                      </span>
+                      <span ng-hide="$index == 0">{{row}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+        </tab>
+   </tabset>
+ </div>
+</div>
+

@@ -1,0 +1,58 @@
+<form name="addgroupform" novalidate="" class="form-horizontal well" ng-controller="AddGroupController" rc-submit="submit()">
+    <api-validate></api-validate>
+    <fieldset>
+        <legend>{{'label.heading.addgroup' | translate}}</legend>
+
+        <div class="control-group">
+            <label class="control-label" for="staffid">{{ 'label.input.staff' | translate }}</label>
+            <div class="controls">
+                <select ng-model="formData.staffId" id="staffid">
+                    <option ng-repeat="staff in groupTemplate.staffOptions" value="{{staff.id}}">{{staff.displayName}}</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div class="control-group">
+                <label class="control-label" for="fullname">{{ 'label.input.name' | translate }}<span class="required">*</span></label>
+                <div class="controls">
+                    <input type="text" id="fullname" name="fullname" ng-model="formData.name" required late-Validate/>
+                    <form-validate valattributeform="addgroupform" valattribute="fullname"/>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="externalid">{{ 'label.input.externalid' | translate }}</label>
+            <div class="controls">
+                <input type="text" id="externalid" ng-model="formData.externalId">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{ 'label.input.clients' | translate }}</label>
+            <div class="controls">
+                <select id="clientMembers" multiple ng-model="formData.clientMembers">
+                        <option ng-repeat="client in groupTemplate.clientOptions" value="{{client.id}}">{{client.displayName}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="active">{{ 'label.input.active' | translate }}</label>
+            <div class="controls">
+                <input type="checkbox" data-ng-click="setChoice()" id="active" ng-model="formData.active">
+            </div>
+        </div>
+        <div data-ng-switch on="choice">
+            <div class="control-group" data-ng-switch-when="1">
+                <label class="control-label">{{'label.input.activationdate' | translate}}</label>
+                <div class="controls">
+                    <input class="date-disable" readonly id="activationDate" type="text" datepicker-pop="dd MMMM yyyy" ng-model="first.date" is-open="opened" min="'2000-01-01'" max="restrictDate"/>
+                 </div>
+            </div>
+        </div>
+        <div class="offset2 paddedleft120">
+            <a href="#/viewcenter/{{groupTemplate.centerId}}" class="btn">{{ 'label.button.cancel' | translate }}</a>
+            <button type="submit" class="btn btn-primary">{{ 'label.button.save' | translate }}</button>
+        </div>
+    </fieldset>
+</form>
+
+

@@ -1,0 +1,36 @@
+<div>
+    <ul class="breadcrumb">
+        <li><a href="#/organization">{{'label.anchor.organization' | translate}}</a> <span class="divider">/</span></li>
+        <li class="active">{{'label.anchor.assetsmanage' | translate}}&nbsp;&nbsp;{{}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/createasset" class="btn btn-primary"><i class="icon-plus icon-white"></i> {{ 'label.button.createasset' | translate }}</a>
+    </div>
+</div>
+<div class="row-fluid" ng-controller="AssetController">
+    <input ng-autofocus="true" ng-model="filterText" type="text" class="span marginbottom0px" placeholder="{{'label.input.filterbyname' | translate}}">
+	<table class="table">
+        <thead>
+            <tr class="graybg">
+                <th>{{ 'label.heading.assetCode' | translate }}</th>
+                <th>{{ 'label.heading.assetDescription' | translate }}</th>
+                <th>{{ 'label.heading.assetType' | translate }}</th>
+                <th>{{ 'label.heading.model' | translate }}</th>
+                <th>{{ 'label.heading.purchaseValue' | translate }}</th>
+                <th>{{ 'label.heading.saleValue' | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="asset in assets | filter:filterText">
+                <td><a href="#/viewasset/{{asset.id}}">{{asset.assetCode}}</a></td>            
+                <td>{{asset.assetCode}}</td>        
+                 <td>{{asset.assetDescription}}</td>    
+                  <td>{{asset.assetType}}</td>   
+                   <td>{{asset.model}}</td>  
+                   <td>{{asset.purchaseValue}}</td>  
+                   <td>{{asset.saleValue}}</td>  
+                          
+            </tr>
+        </tbody>
+    </table>
+</div>

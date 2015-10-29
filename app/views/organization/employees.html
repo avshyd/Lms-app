@@ -1,0 +1,28 @@
+<div>
+    <ul class="breadcrumb">
+        <li><a href="#/organization">{{'label.anchor.organization' | translate}}</a> <span class="divider">/</span></li>
+        <li class="active">{{'label.anchor.manageemployees' | translate}}&nbsp;&nbsp;{{employee.lastname}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/createemployee" class="btn btn-primary"><i class="icon-plus icon-white"></i> {{ 'label.button.createemployee' | translate }}</a>
+    </div>
+</div>
+<div class="row-fluid" ng-controller="EmployeeController">
+    <input ng-autofocus="true" ng-model="filterText" type="text" class="span marginbottom0px" placeholder="{{'label.input.filterbyname' | translate}}">
+	<table class="table">
+        <thead>
+            <tr class="graybg">
+                <th>{{ 'label.heading.name' | translate }}</th>
+                <th>{{ 'label.heading.isLoanOfficer' | translate }}</th>
+                <th>{{ 'label.heading.office' | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in employees | filter:filterText">
+                <td><a href="#/viewemployee/{{employee.id}}">{{employee.displayName}}</a></td>            
+                <td>{{employee.isLoanOfficer}}</td>        
+                <td>{{employee.officeName}}</td>         
+            </tr>
+        </tbody>
+    </table>
+</div>

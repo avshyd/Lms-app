@@ -1,0 +1,45 @@
+<div>
+	<ul class="breadcrumb">
+		<li><a href="#/organization">{{'label.anchor.organization' | translate}}</a> <span class="divider">/</span></li>
+		<li class="active">{{'label.anchor.manageoffices' | translate}}</li>
+	</ul>
+</div>
+
+<div class="row-fluid" ng-controller="OfficesController">
+	<div class="pull-right">
+		<a ng-show="isTreeView" ng-click="isTreeView=!isTreeView" class="btn btn-primary"><i class="icon-list icon-white"></i>{{'label.button.listview' | translate}}</a>
+		<a ng-hide="isTreeView" ng-click="isTreeView=!isTreeView" class="btn btn-primary"><i class="icon-sitemap icon-white"></i>{{'label.button.treeview' | translate}}</a>
+		<a href="#/createoffice" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{'label.button.createoffice' | translate}}</a>
+	</div>
+	<div ng-hide="isTreeView">
+		<input ng-autofocus="true" ng-model="filterText" type="text" class="span marginbottom0px" placeholder="{{'label.input.filterbynameexternalid' | translate}}">
+		<table class="table">
+			<thead>
+				<tr class="graybg">
+					<th>{{'label.heading.productname' | translate}}</th>
+					<th>{{'label.heading.externalid' | translate}}</th>
+					<th>{{'label.heading.parentoffice' | translate}}</th>
+					<th>{{'label.heading.openedon' | translate}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="office in offices  | filter:filterText">
+					<td><a href="#/viewoffice/{{office.id}}">{{office.name}}</a></td>
+					<td><a href="#/viewoffice/{{office.id}}">{{office.externalId}}</a></td>  
+					<td>{{office.parentName}}</td>
+					<td>{{office.openingDate | DateFormat}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-show="isTreeView">
+		<div
+		data-angular-treeview="true"
+		data-tree-id="treeview"
+		data-tree-model="treedata"
+		data-node-id="id"
+		data-node-label="name"
+		data-node-children="children" >
+		</div>
+	</div>
+</div>

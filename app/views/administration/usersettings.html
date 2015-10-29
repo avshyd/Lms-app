@@ -1,0 +1,7 @@
+<h3>{{'label.heading.usersettings' | translate}}</h3>
+<div id="systemUsers" data-ng-controller="UserSettingController">
+
+    <select ng-model="optlang" ng-options="lang.name for lang in langs" ng-change="changeLang(optlang)">
+    </select>
+
+</div>

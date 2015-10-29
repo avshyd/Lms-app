@@ -1,0 +1,22 @@
+<div>
+    <ul class="breadcrumb">
+        <li class="active">{{'label.heading.productmix' | translate}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/addproductmix" class="btn btn-primary"><i class="icon-plus icon-white"></i>{{'label.button.add' | translate}}</a>
+    </div>
+</div>
+<div class="row-fluid" ng-controller="ProductMixController">
+    <table class="table">
+        <thead>
+        <tr class="graybg">
+            <th>{{'label.heading.productname' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="productmix in productmixes">
+            <td><a href="#/viewproductmix/{{productmix.productId}}">{{productmix.productName}}</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
